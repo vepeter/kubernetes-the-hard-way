@@ -36,7 +36,7 @@ Copy the `encryption-config.yaml` encryption config file to each controller inst
 
 ```
 for instance in master-1 master-2; do
-  scp encryption-config.yaml ${instance}:~/
+  scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/${instance}/virtualbox/private_key encryption-config.yaml vagrant@${instance}:~/
 done
 ```
 Reference: https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#encrypting-your-data
