@@ -46,9 +46,9 @@ Results:
 ```
 kube-proxy.kubeconfig
 
+```
 
 Reference docs for kube-proxy [here](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/)
-```
 
 ### The kube-controller-manager Kubernetes Configuration File
 
@@ -163,7 +163,7 @@ Copy the appropriate `kube-proxy` kubeconfig files to each worker instance:
 
 ```
 for instance in worker-1 worker-2; do
-  scp kube-proxy.kubeconfig ${instance}:~/
+  scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/${instance}/virtualbox/private_key kube-proxy.kubeconfig vagrant@${instance}:~/
 done
 ```
 
@@ -171,7 +171,7 @@ Copy the appropriate `admin.kubeconfig`, `kube-controller-manager` and `kube-sch
 
 ```
 for instance in master-1 master-2; do
-  scp admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig ${instance}:~/
+  scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/${instance}/virtualbox/private_key admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig vagrant@${instance}:~/
 done
 ```
 
