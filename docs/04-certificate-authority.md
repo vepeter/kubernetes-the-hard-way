@@ -239,11 +239,13 @@ service-account.crt
 Copy the appropriate certificates and private keys to each controller instance:
 
 ```
+PROJECT_HOME_KTHW=<path to the project>
+...
 for instance in master-1 master-2; do
-  scp ca.crt ca.key kube-apiserver.key kube-apiserver.crt \
+  scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/${instance}/virtualbox/private_key ca.crt ca.key kube-apiserver.key kube-apiserver.crt \
     service-account.key service-account.crt \
     etcd-server.key etcd-server.crt \
-    ${instance}:~/
+    vagrant@${instance}:~/
 done
 ```
 
