@@ -8,6 +8,14 @@ You can do these on any machine with `openssl` on it. But you should be able to 
 
 In our case we do it on the master-1 node, as we have set it up to be the administrative client.
 
+### Project folder
+
+It would be easier to store the project folder as an environment variable, it is used in commands below.
+In the project folder execute the following command:
+
+```
+PROJECT_HOME_KTHW=$PWD
+```
 
 ## Certificate Authority
 
@@ -239,8 +247,6 @@ service-account.crt
 Copy the appropriate certificates and private keys to each controller instance:
 
 ```
-PROJECT_HOME_KTHW=<path to the project>
-...
 for instance in master-1 master-2; do
   scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/${instance}/virtualbox/private_key ca.crt ca.key kube-apiserver.key kube-apiserver.crt \
     service-account.key service-account.crt \
