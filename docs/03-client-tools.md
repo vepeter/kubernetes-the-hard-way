@@ -41,10 +41,10 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 to install the latest version or
 
 ```
-curl -LO https://storage.googleapis.com/kubernetes-release/release/1.18.3/bin/linux/amd64/kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/1.18.4/bin/linux/amd64/kubectl
 
 ```
-to install a specific version (the `1.18.3` in the example above).
+to install a specific version (the `1.18.4` in the example above).
 
 Make the kubectl binary executable:
 
@@ -58,7 +58,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 
 ### Verification
 
-Verify `kubectl` version 1.18.3 or higher is installed:
+Verify `kubectl` version 1.18.0 or higher is installed:
 
 ```
 kubectl version --client
@@ -67,7 +67,7 @@ kubectl version --client
 > output
 
 ```
-Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.3", GitCommit:"2e7996e3e2712684bc73f0dec0200d64eec7fe40", GitTreeState:"clean", BuildDate:"2020-05-20T12:52:00Z", GoVersion:"go1.13.9", Compiler:"gc", Platform:"linux/amd64"}
+Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.4", GitCommit:"c96aede7b5205121079932896c4ad89bb93260af", GitTreeState:"clean", BuildDate:"2020-06-17T11:41:22Z", GoVersion:"go1.13.9", Compiler:"gc", Platform:"linux/amd64"}
 
 ```
 
