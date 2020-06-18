@@ -201,11 +201,11 @@ kubectl get componentstatuses --kubeconfig admin.kubeconfig
 ```
 
 ```
-NAME                 STATUS    MESSAGE              ERROR
-controller-manager   Healthy   ok
-scheduler            Healthy   ok
-etcd-0               Healthy   {"health": "true"}
-etcd-1               Healthy   {"health": "true"}
+NAME                 STATUS    MESSAGE             ERROR
+scheduler            Healthy   ok                  
+controller-manager   Healthy   ok                  
+etcd-1               Healthy   {"health":"true"}   
+etcd-0               Healthy   {"health":"true"}   
 ```
 
 > Remember to run the above commands on each controller node: `master-1`, and `master-2`.
@@ -221,7 +221,7 @@ Login to `loadbalancer` instance using SSH Terminal.
 
 ```
 #Install HAProxy
-loadbalancer# sudo apt-get update && sudo apt-get install -y haproxy
+loadbalancer# sudo apt update && sudo apt install -y haproxy
 
 ```
 
@@ -243,7 +243,7 @@ EOF
 ```
 
 ```
-loadbalancer# sudo service haproxy restart
+loadbalancer# sudo systemctl restart haproxy
 ```
 
 ### Verification
@@ -259,12 +259,12 @@ curl  https://192.168.5.30:6443/version -k
 ```
 {
   "major": "1",
-  "minor": "13",
-  "gitVersion": "v1.13.0",
-  "gitCommit": "ddf47ac13c1a9483ea035a79cd7c10005ff21a6d",
+  "minor": "18",
+  "gitVersion": "v1.18.4",
+  "gitCommit": "c96aede7b5205121079932896c4ad89bb93260af",
   "gitTreeState": "clean",
-  "buildDate": "2018-12-03T20:56:12Z",
-  "goVersion": "go1.11.2",
+  "buildDate": "2020-06-17T11:33:59Z",
+  "goVersion": "go1.13.9",
   "compiler": "gc",
   "platform": "linux/amd64"
 }
