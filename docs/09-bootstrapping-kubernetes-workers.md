@@ -90,7 +90,7 @@ worker-1.kubeconfig
 ### Copy certificates, private keys and kubeconfig files to the worker node:
 On the administrative node:
 ```
-$ scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/worker-1/virtualbox/private_key ca.crt worker-1.crt worker-1.key worker-1.kubeconfig vagrant@worker-1:~/
+$ scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/worker-1/virtualbox/private_key ca.crt worker-1.crt worker-1.key worker-1.kubeconfig kube-proxy.kubeconfig vagrant@worker-1:~/
 ```
 
 ### Download and Install Worker Binaries
@@ -198,10 +198,10 @@ On worker-1:
 sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
 ```
 
-Create the `kube-proxy-config.yaml` configuration file:
+Create the `kube-proxy-config.yaml` configuration file on `worker-1`:
 
 ```
-worker-1$ cat <<EOF | sudo tee /var/lib/kube-proxy/kube-proxy-config.yaml
+cat <<EOF | sudo tee /var/lib/kube-proxy/kube-proxy-config.yaml
 kind: KubeProxyConfiguration
 apiVersion: kubeproxy.config.k8s.io/v1alpha1
 clientConnection:
@@ -211,10 +211,10 @@ clusterCIDR: "192.168.5.0/24"
 EOF
 ```
 
-Create the `kube-proxy.service` systemd unit file:
+Create the `kube-proxy.service` systemd unit file on `worker-1`:
 
 ```
-worker-1$ cat <<EOF | sudo tee /etc/systemd/system/kube-proxy.service
+cat <<EOF | sudo tee /etc/systemd/system/kube-proxy.service
 [Unit]
 Description=Kubernetes Kube Proxy
 Documentation=https://github.com/kubernetes/kubernetes
@@ -243,19 +243,17 @@ On worker-1:
 > Remember to run the above commands on worker node: `worker-1`
 
 ## Verification
-On master-1:
-
-List the registered Kubernetes nodes from the master node:
+On `master-1` list the registered Kubernetes nodes from the master node:
 
 ```
-master-1$ kubectl get nodes --kubeconfig admin.kubeconfig
+kubectl get nodes --kubeconfig admin.kubeconfig
 ```
 
 > output
 
 ```
 NAME       STATUS     ROLES    AGE   VERSION
-worker-1   NotReady   <none>   93s   v1.13.0
+worker-1   NotReady   <none>   47s   v1.18.4
 ```
 
 > Note: It is OK for the worker node to be in a NotReady state.
