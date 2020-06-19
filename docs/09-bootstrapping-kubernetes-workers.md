@@ -17,10 +17,10 @@ Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/doc
 
 Generate a certificate and private key for one worker node:
 
-On master-1:
+On the administrative node:
 
 ```
-master-1$ cat > openssl-worker-1.cnf <<EOF
+$ cat > openssl-worker-1.cnf <<EOF
 [req]
 req_extensions = v3_req
 distinguished_name = req_distinguished_name
@@ -57,7 +57,7 @@ LOADBALANCER_ADDRESS=192.168.5.30
 
 Generate a kubeconfig file for the first worker node.
 
-On master-1:
+On the administrative node:
 ```
 {
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -88,9 +88,9 @@ worker-1.kubeconfig
 ```
 
 ### Copy certificates, private keys and kubeconfig files to the worker node:
-On master-1:
+On the administrative node:
 ```
-master-1$ scp ca.crt worker-1.crt worker-1.key worker-1.kubeconfig worker-1:~/
+$ scp -i $PROJECT_HOME_KTHW/vagrant/.vagrant/machines/worker-1/virtualbox/private_key ca.crt worker-1.crt worker-1.key worker-1.kubeconfig vagrant@worker-1:~/
 ```
 
 ### Download and Install Worker Binaries
@@ -99,18 +99,19 @@ Going forward all activities are to be done on the `worker-1` node.
 
 On worker-1:
 ```
-worker-1$ wget -q --show-progress --https-only --timestamping \
-  https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubectl \
-  https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kube-proxy \
-  https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubelet
+K8S_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+wget -q --show-progress --https-only --timestamping \
+  https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kubectl \
+  https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kube-proxy \
+  https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kubelet
 ```
 
 Reference: https://kubernetes.io/docs/setup/release/#node-binaries
 
-Create the installation directories:
+Create the installation directories on worker-1:
 
 ```
-worker-1$ sudo mkdir -p \
+sudo mkdir -p \
   /etc/cni/net.d \
   /opt/cni/bin \
   /var/lib/kubelet \
@@ -138,10 +139,10 @@ On worker-1:
 }
 ```
 
-Create the `kubelet-config.yaml` configuration file:
+Create the `kubelet-config.yaml` configuration file (on worker-1):
 
 ```
-worker-1$ cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
+cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 authentication:
@@ -163,10 +164,10 @@ EOF
 
 > The `resolvConf` configuration is used to avoid loops when using CoreDNS for service discovery on systems running `systemd-resolved`.
 
-Create the `kubelet.service` systemd unit file:
+Create the `kubelet.service` systemd unit file (on worker-1):
 
 ```
-worker-1$ cat <<EOF | sudo tee /etc/systemd/system/kubelet.service
+cat <<EOF | sudo tee /etc/systemd/system/kubelet.service
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/kubernetes/kubernetes
@@ -194,7 +195,7 @@ EOF
 ### Configure the Kubernetes Proxy
 On worker-1:
 ```
-worker-1$ sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
+sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
 ```
 
 Create the `kube-proxy-config.yaml` configuration file:
