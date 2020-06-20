@@ -13,7 +13,7 @@ kubectl create secret generic kubernetes-the-hard-way \
   --from-literal="mykey=mydata"
 ```
 
-Print a hexdump of the `kubernetes-the-hard-way` secret stored in etcd:
+Print a hexdump of the `kubernetes-the-hard-way` secret stored in etcd on a `master-*` node:
 
 ```
 sudo ETCDCTL_API=3 etcdctl get \
@@ -142,7 +142,7 @@ kubectl exec -ti $POD_NAME -- nginx -v
 > output
 
 ```
-nginx version: nginx/1.15.9
+nginx version: nginx/1.19.0
 ```
 
 Next: [End to End Tests](16-e2e-tests.md)
