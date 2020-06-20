@@ -5,7 +5,7 @@ In this section you will configure RBAC permissions to allow the Kubernetes API 
 > This tutorial sets the Kubelet `--authorization-mode` flag to `Webhook`. Webhook mode uses the [SubjectAccessReview](https://kubernetes.io/docs/admin/authorization/#checking-api-access) API to determine authorization.
 
 
-Create the `system:kube-apiserver-to-kubelet` [ClusterRole](https://kubernetes.io/docs/admin/authorization/rbac/#role-and-clusterrole) with permissions to access the Kubelet API and perform most common tasks associated with managing pods:
+Create the `system:kube-apiserver-to-kubelet` [ClusterRole](https://kubernetes.io/docs/admin/authorization/rbac/#role-and-clusterrole) with permissions to access the Kubelet API and perform most common tasks associated with managing pods (on the administrative node):
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -34,7 +34,7 @@ Reference: https://v1-18.docs.kubernetes.io/docs/reference/access-authn-authz/rb
 
 The Kubernetes API Server authenticates to the Kubelet as the `kubernetes` user using the client certificate as defined by the `--kubelet-client-certificate` flag.
 
-Bind the `system:kube-apiserver-to-kubelet` ClusterRole to the `kubernetes` user:
+Bind the `system:kube-apiserver-to-kubelet` ClusterRole to the `kubernetes` user (on the administrative node):
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -53,6 +53,6 @@ subjects:
     name: kube-apiserver
 EOF
 ```
-Reference: https://v1-12.docs.kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding
+Reference: https://v1-18.docs.kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding
 
 Next: [DNS Addon](14-dns-addon.md)
